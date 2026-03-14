@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:rcount}",
+            "name": "Debug rcount",
+            "target": "rcount",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug rcount"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:rcount}",
+            "name": "Release rcount",
+            "target": "rcount",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release rcount"
+        }
+    ]
+}
