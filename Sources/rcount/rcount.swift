@@ -29,6 +29,9 @@ struct rcount {
         let path = URL(fileURLWithPath: fileManager.currentDirectoryPath)
 
         var repoCount = 0
+        var noRepoCount = 0
+        var dirs = [String]()
+        var noDirs = [String]()
 
         let items = try fileManager.contentsOfDirectory(
             at: path,
@@ -39,12 +42,31 @@ struct rcount {
             let values = try item.resourceValues(forKeys: [.isDirectoryKey])
 
             if values.isDirectory == true {
-                checkForGitRepo(dir: "\(item.lastPathComponent)") == true ? repoCount += 1 : nil
-
-                print("📁 \(item.lastPathComponent)")
+                if checkForGitRepo(dir: "\(item.lastPathComponent)") == true {
+                    repoCount += 1
+                    dirs += [item.lastPathComponent]
+                } else {
+                    noRepoCount += 1
+                    noDirs += [item.lastPathComponent]
+                }
             }
         }
 
-        print("\(repoCount) \(pluralize(word: "repository", type: "irregular/y", number: repoCount)) found.")
+        if noRepoCount > 0 && repoCount > 0 {
+            print(
+                """
+                \(repoCount) \(pluralize(word: "repository", type: "irregular/y", number: repoCount)) found:
+                📁 \(dirs.map { $0 }.joined(separator: "\n📁 "))
+
+                \(noRepoCount) \(pluralize(word: "folder", type: "regular", number: noRepoCount)) without a repo were found:
+                ❌ \(noDirs.map { $0 }.joined(separator: "\n❌ "))
+                """)
+        } else if repoCount > 0 {
+            print(
+                """
+                \(repoCount) \(pluralize(word: "repository", type: "irregular/y", number: repoCount)) found:
+                📁 \(dirs.map { $0 }.joined(separator: "\n📁 "))
+                """)
+        }
     }
 }

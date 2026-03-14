@@ -7,6 +7,12 @@ func pluralize(word: String, type: String, number: Int) -> String{
         } else {
             nw = word
         }
+    } else if type == "regular" {
+        if number != 1 {
+            nw = word + "s"
+        } else {
+            nw = word
+        }
     }
 
     return nw
