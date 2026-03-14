@@ -39,7 +39,7 @@ struct rcount {
             let values = try item.resourceValues(forKeys: [.isDirectoryKey])
 
             if values.isDirectory == true {
-                checkForGitRepo(dir: "\(item.lastPathComponent)") == true ? repoCount = 2 : nil
+                checkForGitRepo(dir: "\(item.lastPathComponent)") == true ? repoCount += 1 : nil
 
                 print("📁 \(item.lastPathComponent)")
             }
