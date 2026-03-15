@@ -27,7 +27,7 @@ swift build -c release
 sudo mv .build/release/rcount /usr/local/bin/rcount
 ```
 
-6. Verify installation
+5. Verify installation
 ```
 which rcount
 ```
