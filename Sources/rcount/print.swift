@@ -1,13 +1,8 @@
 // THIS DOCUMENT DETERMINES FINAL PRINT STATEMENT
 
-/* rcount -- number of repos */
-/* ncount -- number of folders without repos */
-func printResult(
-    rCount: Int,
-    nCount: Int,
-    rDirs: [String],
-    nDirs: [String],
-    isQuiet: Bool) {
+/* rCount -- number of repos; rDirs -- which repos */
+/* nCount -- number of folders without repos; nDirs -- which repos */
+func printResult( rCount: Int, nCount: Int, rDirs: [String], nDirs: [String], isQuiet: Bool) {
     let rprint = "\(rCount) \(rCount != 1 ? "repositories" : "repository") found:"
     let rdirs = "📁 \(rDirs.map { $0 }.joined(separator: "\n📁 "))"
 
@@ -21,8 +16,6 @@ func printResult(
 
     var statement = ""
 
-
-    /* if there are no repos found, say 0 repos found + the following have no repos */
     if isQuiet == true {
         statement =
             ("""
