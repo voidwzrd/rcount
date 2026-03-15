@@ -1,8 +1,13 @@
+import ArgumentParser
+import Foundation
+
 // THIS DOCUMENT DETERMINES FINAL PRINT STATEMENT
 
 /* rCount -- number of repos; rDirs -- which repos */
 /* nCount -- number of folders without repos; nDirs -- which repos */
-func printResult( rCount: Int, nCount: Int, rDirs: [String], nDirs: [String], isQuiet: Bool) {
+func printResult(
+    rCount: Int, nCount: Int, rDirs: [String], nDirs: [String], isQuiet: Bool, isVerbose: Bool
+) {
     let rprint = "\(rCount) \(rCount != 1 ? "repositories" : "repository") found:"
     let rdirs = "📁 \(rDirs.map { $0 }.joined(separator: "\n📁 "))"
 
@@ -16,16 +21,12 @@ func printResult( rCount: Int, nCount: Int, rDirs: [String], nDirs: [String], is
 
     var statement = ""
 
+       
+
     if isQuiet == true {
-        statement =
-            ("""
-            \(qTruth)
-            """)
+        statement = qTruth
     } else if rCount == 0 {
-        statement =
-            ("""
-            \(nTruth)
-            """)
+        statement = nTruth
     } else if rCount != 0 && nCount == 0 {
         statement =
             ("""
