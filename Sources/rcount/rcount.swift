@@ -1,4 +1,5 @@
 import Foundation
+import ArgumentParser
 
 func runGit(args: [String]) -> String {
     let process = Process()
@@ -23,7 +24,7 @@ func checkForGitRepo(dir: String) -> Bool {
 }
 
 @main
-struct rcount {
+struct rcount: ParsableCommand {
     static func main() throws {
         let fileManager = FileManager.default
         let path = URL(fileURLWithPath: fileManager.currentDirectoryPath)
@@ -52,21 +53,6 @@ struct rcount {
             }
         }
 
-        if noRepoCount > 0 && repoCount > 0 {
-            print(
-                """
-                \(repoCount) \(pluralize(word: "repository", type: "irregular/y", number: repoCount)) found:
-                📁 \(dirs.map { $0 }.joined(separator: "\n📁 "))
-
-                \(noRepoCount) \(pluralize(word: "folder", type: "regular", number: noRepoCount)) without a repo were found:
-                ❌ \(noDirs.map { $0 }.joined(separator: "\n❌ "))
-                """)
-        } else if repoCount > 0 {
-            print(
-                """
-                \(repoCount) \(pluralize(word: "repository", type: "irregular/y", number: repoCount)) found:
-                📁 \(dirs.map { $0 }.joined(separator: "\n📁 "))
-                """)
-        }
+        printResult(rcount: repoCount, ncount: noRepoCount, rdirs: dirs, ndirs: noDirs)
     }
 }
