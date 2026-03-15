@@ -1,5 +1,5 @@
-import Foundation
 import ArgumentParser
+import Foundation
 
 func runGit(args: [String]) -> String {
     let process = Process()
@@ -25,14 +25,16 @@ func checkForGitRepo(dir: String) -> Bool {
 
 @main
 struct rcount: ParsableCommand {
-    static func main() throws {
+    @Option var quiet = false
+
+    func main() throws {
         let fileManager = FileManager.default
         let path = URL(fileURLWithPath: fileManager.currentDirectoryPath)
 
-        var repoCount = 0
-        var noRepoCount = 0
-        var dirs = [String]()
-        var noDirs = [String]()
+        var rCount = 0
+        var nCount = 0
+        var rDirs = [String]()
+        var nDirs = [String]()
 
         let items = try fileManager.contentsOfDirectory(
             at: path,
@@ -44,15 +46,21 @@ struct rcount: ParsableCommand {
 
             if values.isDirectory == true {
                 if checkForGitRepo(dir: "\(item.lastPathComponent)") == true {
-                    repoCount += 1
-                    dirs += [item.lastPathComponent]
+                    rCount += 1
+                    rDirs += [item.lastPathComponent]
                 } else {
-                    noRepoCount += 1
-                    noDirs += [item.lastPathComponent]
+                    nCount += 1
+                    nDirs += [item.lastPathComponent]
                 }
             }
         }
 
-        printResult(rcount: repoCount, ncount: noRepoCount, rdirs: dirs, ndirs: noDirs)
+        printResult(
+            rCount: rCount,
+            nCount: nCount,
+            rDirs: rDirs,
+            nDirs: nDirs,
+            isQuiet: quiet
+        )
     }
 }

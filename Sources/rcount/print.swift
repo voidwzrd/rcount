@@ -2,47 +2,59 @@
 
 /* rcount -- number of repos */
 /* ncount -- number of folders without repos */
-func printResult(rcount: Int, ncount: Int, rdirs: [String], ndirs: [String]) {
-    let rprint = "\(rcount) \(rcount != 1 ? "repositories" : "repository") found:"
-    let rdirs = "📁 \(rdirs.map { $0 }.joined(separator: "\n📁 "))"
+func printResult(
+    rCount: Int,
+    nCount: Int,
+    rDirs: [String],
+    nDirs: [String],
+    isQuiet: Bool) {
+    let rprint = "\(rCount) \(rCount != 1 ? "repositories" : "repository") found:"
+    let rdirs = "📁 \(rDirs.map { $0 }.joined(separator: "\n📁 "))"
 
     let nprint =
-        "The following \(ncount) \(ncount != 1 ? "directories contain" : "directory contains") no git repo:"
-    let ndirs = "❌ \(ndirs.map { $0 }.joined(separator: "\n❌ "))"
+        "The following \(nCount) \(nCount != 1 ? "directories contain" : "directory contains") no git repo:"
+    let nDirs = "❌ \(rDirs.map { $0 }.joined(separator: "\n❌ "))"
 
-    let rtruth = "ALL directories are repositories."
-    let ntruth = "0 directories are repositories."
+    let rTruth = "ALL directories are repositories."
+    let nTruth = "0 directories are repositories."
+    let qTruth = "\(rCount) \(rCount != 1 ? "directories with repos" : "directory with repos") and \(nCount) \(nCount != 1 ? "directories" : "directory") without git repos found."
 
     var statement = ""
 
+
     /* if there are no repos found, say 0 repos found + the following have no repos */
-    if rcount == 0 {
+    if isQuiet == false {
         statement =
             ("""
-            \(ntruth)
+            \(qTruth) + 
             """)
-    } else if rcount != 0 && ncount == 0 {
+    } else if rCount == 0 {
+        statement =
+            ("""
+            \(nTruth)
+            """)
+    } else if rCount != 0 && nCount == 0 {
         statement =
             ("""
             \(rprint)
             \(rdirs)
-            \(rtruth)
+            \(rTruth)
             """)
-    } else if rcount == 0 && ncount != 0 {
+    } else if rCount == 0 && nCount != 0 {
         statement =
             ("""
             \(nprint)
-            \(ndirs)
-            \(ntruth)
+            \(nDirs)
+            \(nTruth)
             """)
-    } else if rcount != 0 && ncount != 0 {
+    } else if rCount != 0 && nCount != 0 {
         statement =
             ("""
             \(rprint)
             \(rdirs)
 
             \(nprint)
-            \(ndirs)
+            \(nDirs)
             """)
     }
 
