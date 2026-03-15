@@ -25,9 +25,10 @@ func checkForGitRepo(dir: String) -> Bool {
 
 @main
 struct rcount: ParsableCommand {
-    @Option var quiet = false
+    @Flag(name: .shortAndLong, help: "Limit information to number of repos found.")
+    var quiet = false
 
-    func main() throws {
+    func run() throws {
         let fileManager = FileManager.default
         let path = URL(fileURLWithPath: fileManager.currentDirectoryPath)
 
@@ -54,6 +55,7 @@ struct rcount: ParsableCommand {
                 }
             }
         }
+
 
         printResult(
             rCount: rCount,

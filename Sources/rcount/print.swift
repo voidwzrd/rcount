@@ -17,16 +17,16 @@ func printResult(
 
     let rTruth = "ALL directories are repositories."
     let nTruth = "0 directories are repositories."
-    let qTruth = "\(rCount) \(rCount != 1 ? "directories with repos" : "directory with repos") and \(nCount) \(nCount != 1 ? "directories" : "directory") without git repos found."
+    let qTruth = "\(rCount) \(rCount != 1 ? "repositories" : "repository") found."
 
     var statement = ""
 
 
     /* if there are no repos found, say 0 repos found + the following have no repos */
-    if isQuiet == false {
+    if isQuiet == true {
         statement =
             ("""
-            \(qTruth) + 
+            \(qTruth)
             """)
     } else if rCount == 0 {
         statement =
