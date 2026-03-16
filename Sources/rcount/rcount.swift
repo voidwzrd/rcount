@@ -6,11 +6,21 @@ struct rcount: ParsableCommand {
     static let configuration = CommandConfiguration(
         commandName: "rcount",
         abstract: "Shows how many local directories contain a git repo",
+        abstract: "Shows how many local directories contain a git repo",
         version: "0.3"
     )
 
     @Flag(name: .shortAndLong, help: "Limit information to number of repos found.")
     var quiet = false
+
+    @Flag(name: .shortAndLong, help: "Get more information about which directories contain repos")
+    var verbose = false
+
+    func validate() throws {
+        if quiet && verbose {
+            throw ValidationError("Cannot use --quiet and --verbose together.")
+        }
+    }
 
     func run() throws {
         let fm = FileManager.default
