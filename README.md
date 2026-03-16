@@ -8,6 +8,7 @@ CLI tool that shows how many local folders contain a git repo
 
 ## Roadmap
 - Implement option to `git init` select directories.
+- Implement --verbose functionality.
 
 ## Download and Install
 
