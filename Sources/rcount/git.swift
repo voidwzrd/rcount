@@ -17,7 +17,7 @@ func runGit(args: [String]) -> String {
     return String(data: data, encoding: .utf8) ?? ""
 }
 
-func checkForGitRepo(dir: String) -> Bool {
+func checkGitRepoStatus(dir: String) -> Bool {
     let result = runGit(args: ["-C", "\(dir)", "rev-parse", "--is-inside-work-tree"])
     return result.trimmingCharacters(in: .whitespacesAndNewlines) == "true" ? true : false
 }

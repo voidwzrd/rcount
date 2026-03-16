@@ -14,15 +14,13 @@ struct rcount: ParsableCommand {
 
     func run() throws {
 
-        let fileManager = FileManager.default
-        let path = URL(fileURLWithPath: fileManager.currentDirectoryPath)
+        let fm = FileManager.default
+        let path = URL(fileURLWithPath: fm.currentDirectoryPath)
 
-        var rCount = 0
-        var nCount = 0
-        var rDirs = [String]()
-        var nDirs = [String]()
+        var repos = [String]()
+        var notRepos = [String]()
 
-        let items = try fileManager.contentsOfDirectory(
+        let items = try fm.contentsOfDirectory(
             at: path,
             includingPropertiesForKeys: [.isDirectoryKey],
             options: [.skipsHiddenFiles])
@@ -31,22 +29,14 @@ struct rcount: ParsableCommand {
             let values = try item.resourceValues(forKeys: [.isDirectoryKey])
 
             if values.isDirectory == true {
-                if checkForGitRepo(dir: "\(item.lastPathComponent)") == true {
-                    rCount += 1
-                    rDirs += [item.lastPathComponent]
+                if checkGitRepoStatus(dir: "\(item.lastPathComponent)") == true {
+                    repos += [item.lastPathComponent]
                 } else {
-                    nCount += 1
-                    nDirs += [item.lastPathComponent]
+                    notRepos += [item.lastPathComponent]
                 }
             }
         }
 
-        printResult(
-            rCount: rCount,
-            nCount: nCount,
-            rDirs: rDirs,
-            nDirs: nDirs,
-            isQuiet: quiet
-        )
+        printResult(isQuiet: quiet, repos: repos, notRepos: notRepos)
     }
 }
