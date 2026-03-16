@@ -12,7 +12,7 @@ struct rcount: ParsableCommand {
     @Flag(name: .shortAndLong, help: "Limit information to number of repos found.")
     var quiet = false
 
-    @Flag(name: .shortAndLong, help: "Get more information about which directories contain repos")
+    @Flag(name: .shortAndLong, help: "This is coming, for now it doesn't work. :)")
     var verbose = false
 
     func validate() throws {
