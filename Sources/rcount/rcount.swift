@@ -6,7 +6,7 @@ struct rcount: ParsableCommand {
     static let configuration = CommandConfiguration(
         commandName: "rcount",
         abstract: "Shows how many local directories contain a git repo",
-        version: "0.3"
+        version: "1.0"
     )
 
     @Flag(name: .shortAndLong, help: "Limit information to number of repos found.")
