@@ -16,7 +16,7 @@ func pl(count: Int, str: String) -> String {
     return returnable
 }
 
-func printResult(isQuiet: Bool, repos: [String], notRepos: [String]) {
+func printMsg(isQuiet: Bool, repos: [String], notRepos: [String]) {
 
     // EMPTY VARIABLES
 
@@ -54,14 +54,14 @@ func printResult(isQuiet: Bool, repos: [String], notRepos: [String]) {
             if directoryCount == repoCount {
                 msg =
                     """
-                    The only directory contains a repo:
+                    The only directory is a repo:
                     \(repos)
                     """
                 // IF ONLY 1 DIRECTORY AND IT'S A REPO
             } else if directoryCount == notRepoCount {
                 msg =
                     """
-                    The only directory does not contain a repo:
+                    The only directory is not a repo:
                     \(notRepos)
                     """
             }
@@ -71,41 +71,41 @@ func printResult(isQuiet: Bool, repos: [String], notRepos: [String]) {
             if (directoryCount == repoCount) && notRepoCount == 0 {
                 msg =
                     """
-                    Every directory contains a repo:
+                    Every directory is a repo:
                     \(repos)
                     """
                 // IF ALL > 1 DIRECTORIES ARE NOT REPOS
             } else if repoCount == 0 && (directoryCount == notRepoCount) {
                 msg =
                     """
-                    No directory here contains a repo:
+                    No directory here is a repo:
                     \(notRepos)
                     """
             } else if repoCount > 1 && notRepoCount == 1 {
                 msg =
                     """
-                    Most directories here contain a repo:
+                    Most directories here are a repo:
                     \(repos)
                     ----------
-                    1 directory here does not contain a repo:
+                    1 directory here is not a repo:
                     \(notRepos)
                     """
             } else if repoCount > 1 && notRepoCount > 1 {
                 msg =
                     """
-                    \(repoCount) directories contain a repo:
+                    \(repoCount) directories are repos:
                     \(repos)
                     ----------
-                    \(notRepoCount) directories do not contain a repo:
+                    \(notRepoCount) directories are not repos:
                     \(notRepos)
                     """
             } else if repoCount == 1 && notRepoCount > 1 {
                 msg =
                     """
-                    1 directory here contains a repo:
+                    1 directory here is a repo:
                     \(repos)
                     ----------
-                    Most directories here do not contain a repo:
+                    Most directories here are not repos:
                     \(notRepos)
                     """
             }

@@ -1,6 +1,6 @@
 import Foundation
 
-func runGit(args: [String]) -> String {
+func runGit(args: [String]) -> Bool {
     let process = Process()
     process.executableURL = URL(fileURLWithPath: "/usr/bin/git")
     process.arguments = args
@@ -9,29 +9,17 @@ func runGit(args: [String]) -> String {
     process.standardOutput = pipe
     process.standardError = pipe
 
-    try! process.run()
-    process.waitUntilExit()
+    do {
+        try process.run()
+        process.waitUntilExit()
+    } catch {
+        return false
+    }
 
-    let data = pipe.fileHandleForReading.readDataToEndOfFile()
-
-    return String(data: data, encoding: .utf8) ?? ""
+    return process.terminationStatus == 0
 }
 
-func checkGitRepoStatus(_ dirPath: String, currentDirPath: String,) -> Bool {
-    // var result = ""
-
-// if r = r
-    // if dirPath.count == 0 {
-    //     result = runGit(args: ["rev-parse", "--is-inside-work-tree"]) == "true" ? "true" : "false"
-    // } else {
-    //     // result = runGit(args: ["-C", "\(dir)", "rev-parse", "--show-toplevel"]) == true ? true : false
-    //     result = "false"
-    // }
-
-    // let result = runGit(args: ["-C", "\(dir)", "rev-parse", "--is-inside-work-tree"])
-//   ÷÷
-
-return true
-
-    // return result.trimmingCharacters(in: .whitespacesAndNewlines) == "true" ? true : false
+func checkGitRepoStatus(dir: String) -> Bool {
+    let result = runGit(args: ["-C", "\(dir)", "rev-parse", "--is-inside-work-tree"])
+    return result
 }

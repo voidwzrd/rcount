@@ -5,7 +5,7 @@ import Foundation
 struct rcount: ParsableCommand {
     static let configuration = CommandConfiguration(
         commandName: "rcount",
-        abstract: "Shows how many local folders contain a git repo",
+        abstract: "Shows how many local directories contain a git repo",
         version: "0.3"
     )
 
@@ -15,28 +15,7 @@ struct rcount: ParsableCommand {
     func run() throws {
         let fm = FileManager.default
         let path = URL(fileURLWithPath: fm.currentDirectoryPath)
-
-
-
-
-
-
-
-
-
-        
-
-        let isCurrentPathRepo = {
-            do {
-                try runGit(args: ["rev-parse", "--is-inside-work-tree"])
-
-            }
-        }
-
-
-        print(type(of: runGit(args: ["rev-parse", "--is-inside-work-tree"])))
-        print(runGit(args: ["rev-parse", "--is-inside-work-tree"]))
-        print(isCurrentPathRepo)
+        let isPathRepo = runGit(args: ["rev-parse", "--is-inside-work-tree"])
 
         var repos = [String]()
         var notRepos = [String]()
@@ -46,40 +25,29 @@ struct rcount: ParsableCommand {
             includingPropertiesForKeys: [.isDirectoryKey],
             options: [.skipsHiddenFiles])
 
-        
+        switch isPathRepo {
+        case true:
+            if quiet {
+                print("This is a repo. Exiting.")
+            } else {
+                print("You are currently inside of a repo. No further checks will be made.")
+            }
+        case false:
+            for item in items {
+                let values = try item.resourceValues(forKeys: [.isDirectoryKey])
 
+                if values.isDirectory == true {
+                    if runGit(args: [
+                        "-C", "\(item.lastPathComponent)", "rev-parse", "--is-inside-work-tree",
+                    ]) {
+                        repos += [item.lastPathComponent]
+                    } else {
+                        notRepos += [item.lastPathComponent]
+                    }
+                }
+            }
 
-
-
-
-        // switch items.count {
-        //     case 0:
-
-        //     case 1: 
-        // }
-
-        for item in items {
-            let values = try item.resourceValues(forKeys: [.isDirectoryKey])
-            let currentDir = item.deletingLastPathComponent()
-
-
-            // let isCurrentPathRepo = 
-
-            // if runGit(args: ["rev-parse", "--is-inside-work-tree"]) == "true" ? "true" : "false" {
-
-            // } else if values.isDirectory == true {
-            //     if checkGitRepoStatus(currentDir: currentDir.lastPathComponent, dir: "\(item.lastPathComponent)") == true
-            //     {
-            //         repos += [item.lastPathComponent]
-            //     } else {
-            //         notRepos += [item.lastPathComponent]
-            //     }
-            // }
+            printMsg(isQuiet: quiet, repos: repos, notRepos: notRepos)
         }
-
-        if isCurrentPathRepo == "true" {
-            print("You are currently inside of a repo.")
-        }
-
     }
 }
