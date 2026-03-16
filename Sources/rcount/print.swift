@@ -1,17 +1,21 @@
 // THIS DOCUMENT DETERMINES FINAL PRINT STATEMENT
 
 func pl(str: String, count: Int) -> String {
-    if str == "directory" {
-        return count != 1 ? "directories" : "directory"
+    var returnable = ""
+
+    if str == "be" {
+        returnable = count != 1 ? "are" : "is"
+    } else if str == "directory" {
+        returnable = count != 1 ? "directories" : str
     } else if str == "have" {
-        return count != 1 ? "have" : "has"
+        returnable = count != 1 ? "have" : "has"
     } else if str == "repository" {
-        return count != 1 ? "repositories" : "repository"
+        returnable = count != 1 ? "repositories" : str
     }
+
+    return returnable
 }
 
-/* rCount -- number of repos; rDirs -- which repos */
-/* nCount -- number of folders without repos; nDirs -- which repos */
 func printResult(isQuiet: Bool, repos: [String], notRepos: [String]) {
 
     // EMPTY VARIABLES
@@ -26,14 +30,25 @@ func printResult(isQuiet: Bool, repos: [String], notRepos: [String]) {
 
     // HELPER STATEMENTS
 
-    let reposLine = "\(repoCount) \(repoCount != 1 ? "repositories" : "repository") found:"
     let repos = "📁 \(repos.map { $0 }.joined(separator: "\n📁 "))"
+    let notRepos = "📁 \(notRepos.map { $0 }.joined(separator: "\n📁 "))"
+
+    // ALT SWITCH STATEMENT
+    switch dirCount {
+    case 0:
+        printLine = "0 directories found. No repositories to check."
+    case let dirCount
+    where dirCount == repoCount:
+        printLine =
+            "\(pl(str: "all", count: (repoCount)))) \(dirCount) \(pl(str: "repository", count: (repoCount)))) found. Count: "
+    default: printLine = ""
+    }
 
     // SWITCH STATEMENT –– BASED ON isQuiet
 
     switch isQuiet {
-    case (true || false) && dirCount == 0:
-        printLine = "0 directories found. No repositories to check."
+    case (isQuiet == true || isQuiet == false) && dirCount == 0:
+        printLine = "QUIET: 0 directories found. No repositories to check."
     case true:
         if repoCount == dirCount {
             printLine =
@@ -68,50 +83,13 @@ func printResult(isQuiet: Bool, repos: [String], notRepos: [String]) {
             printLine =
                 ("""
                 \(repoCount) of \(dirCount) \(pl(str: "directory", count: dirCount)) found \(pl(str: "have", count: (repoCount))) a repo:
+                \(repos)
+                ---
+                The remaining \(notRepoCount) \(pl(str: "directory", count: dirCount)) \(pl(str: "have", count: (repoCount))) no repo:
                 \(notRepos)
                 """)
         }
-    default: printLine = ""
     }
 
-    let nprint =
-        "The following \(nCount) \(nCount != 1 ? "directories contain" : "directory contains") no git repo:"
-    let nDirs = "❌ \(rDirs.map { $0 }.joined(separator: "\n❌ "))"
-
-    if isQuiet == true {
-        statement =
-            ("""
-            \(qTruth)
-            """)
-    } else if rCount == 0 {
-        statement =
-            ("""
-            \(nTruth)
-            """)
-    } else if rCount != 0 && nCount == 0 {
-        statement =
-            ("""
-            \(rprint)
-            \(rdirs)
-            \(rTruth)
-            """)
-    } else if rCount == 0 && nCount != 0 {
-        statement =
-            ("""
-            \(nprint)
-            \(nDirs)
-            \(nTruth)
-            """)
-    } else if rCount != 0 && nCount != 0 {
-        statement =
-            ("""
-            \(rprint)
-            \(rdirs)
-
-            \(nprint)
-            \(nDirs)
-            """)
-    }
-
-    print(statement)
+    print(printLine)
 }
