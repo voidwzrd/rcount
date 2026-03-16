@@ -13,9 +13,30 @@ struct rcount: ParsableCommand {
     var quiet = false
 
     func run() throws {
-
         let fm = FileManager.default
         let path = URL(fileURLWithPath: fm.currentDirectoryPath)
+
+
+
+
+
+
+
+
+
+        
+
+        let isCurrentPathRepo = {
+            do {
+                try runGit(args: ["rev-parse", "--is-inside-work-tree"])
+
+            }
+        }
+
+
+        print(type(of: runGit(args: ["rev-parse", "--is-inside-work-tree"])))
+        print(runGit(args: ["rev-parse", "--is-inside-work-tree"]))
+        print(isCurrentPathRepo)
 
         var repos = [String]()
         var notRepos = [String]()
@@ -25,18 +46,40 @@ struct rcount: ParsableCommand {
             includingPropertiesForKeys: [.isDirectoryKey],
             options: [.skipsHiddenFiles])
 
+        
+
+
+
+
+
+        // switch items.count {
+        //     case 0:
+
+        //     case 1: 
+        // }
+
         for item in items {
             let values = try item.resourceValues(forKeys: [.isDirectoryKey])
+            let currentDir = item.deletingLastPathComponent()
 
-            if values.isDirectory == true {
-                if checkGitRepoStatus(dir: "\(item.lastPathComponent)") == true {
-                    repos += [item.lastPathComponent]
-                } else {
-                    notRepos += [item.lastPathComponent]
-                }
-            }
+
+            // let isCurrentPathRepo = 
+
+            // if runGit(args: ["rev-parse", "--is-inside-work-tree"]) == "true" ? "true" : "false" {
+
+            // } else if values.isDirectory == true {
+            //     if checkGitRepoStatus(currentDir: currentDir.lastPathComponent, dir: "\(item.lastPathComponent)") == true
+            //     {
+            //         repos += [item.lastPathComponent]
+            //     } else {
+            //         notRepos += [item.lastPathComponent]
+            //     }
+            // }
         }
 
-        printResult(isQuiet: quiet, repos: repos, notRepos: notRepos)
+        if isCurrentPathRepo == "true" {
+            print("You are currently inside of a repo.")
+        }
+
     }
 }

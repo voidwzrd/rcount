@@ -1,6 +1,6 @@
 // THIS DOCUMENT DETERMINES FINAL PRINT STATEMENT
 
-func pl(str: String, count: Int) -> String {
+func pl(count: Int, str: String) -> String {
     var returnable = ""
 
     if str == "be" {
@@ -20,76 +20,106 @@ func printResult(isQuiet: Bool, repos: [String], notRepos: [String]) {
 
     // EMPTY VARIABLES
 
-    var printLine = ""
+    var msg = ""
 
     // COUNTS
 
     let repoCount = repos.count
     let notRepoCount = notRepos.count
-    let dirCount = repoCount + notRepoCount
+    let directoryCount = repoCount + notRepoCount
 
-    // HELPER STATEMENTS
+    let zeroDirStatus = "0 directories found. No repositories to check."
+
+    // REPO LINES
 
     let repos = "📁 \(repos.map { $0 }.joined(separator: "\n📁 "))"
     let notRepos = "📁 \(notRepos.map { $0 }.joined(separator: "\n📁 "))"
 
-    // ALT SWITCH STATEMENT
-    switch dirCount {
-    case 0:
-        printLine = "0 directories found. No repositories to check."
-    case let dirCount
-    where dirCount == repoCount:
-        printLine =
-            "\(pl(str: "all", count: (repoCount)))) \(dirCount) \(pl(str: "repository", count: (repoCount)))) found. Count: "
-    default: printLine = ""
-    }
-
-    // SWITCH STATEMENT –– BASED ON isQuiet
-
+    /* SWITCH STATEMENT */
     switch isQuiet {
-    case (isQuiet == true || isQuiet == false) && dirCount == 0:
-        printLine = "QUIET: 0 directories found. No repositories to check."
     case true:
-        if repoCount == dirCount {
-            printLine =
-                "\(repoCount) of \(dirCount) \(pl(str: "repository", count: (repoCount)))) found."
-        } else if repoCount == 0 && notRepoCount > 0 {
-            printLine =
-                "0 repositories found, but \(dirCount) \(dirCount != 1 ? "directories exist." : "directory exists.")"
-        } else if repoCount > 0 && notRepoCount == 0 {
-            printLine = "\(repoCount) \(repoCount != 1 ? "repositories" : "repository") found."
-        } else if repoCount > 0 && notRepoCount > 0 {
-            printLine =
-                "\(repoCount) \(repoCount != 1 ? "repositories" : "repository") and \(notRepoCount) \(notRepoCount != 1 ? "directories" : "directory") without repositories found."
+        if directoryCount == 0 {
+            msg = zeroDirStatus
+        } else {
+            msg =
+                "\(repoCount) \(repoCount != 1 ? "repositories" : "repository") found."
         }
     case false:
-        if repoCount == dirCount {
-            if repoCount == 1 {
-                printLine = "1 directory found and it contains a repo: \(repos)"
-            } else if repoCount > 1 {
-                printLine =
-                    ("""
-                    \(dirCount) directories found and ALL contain a repo:
+        // 0 DIRECTORIES
+        switch directoryCount {
+        case 0:
+            msg = zeroDirStatus
+        case 1:
+            // IF ONLY 1 DIRECTORY AND IT'S A REPO
+            if directoryCount == repoCount {
+                msg =
+                    """
+                    The only directory contains a repo:
                     \(repos)
-                    """)
+                    """
+                // IF ONLY 1 DIRECTORY AND IT'S A REPO
+            } else if directoryCount == notRepoCount {
+                msg =
+                    """
+                    The only directory does not contain a repo:
+                    \(notRepos)
+                    """
             }
-        } else if repoCount == 0 && notRepoCount > 0 {
-            printLine =
-                ("""
-                \(dirCount) \(pl(str: "directory", count: dirCount)) found, and 0 have repos:
-                \(notRepos)
-                """)
-        } else if repoCount > 0 && notRepoCount > 0 {
-            printLine =
-                ("""
-                \(repoCount) of \(dirCount) \(pl(str: "directory", count: dirCount)) found \(pl(str: "have", count: (repoCount))) a repo:
-                \(repos)
-                ---
-                The remaining \(notRepoCount) \(pl(str: "directory", count: dirCount)) \(pl(str: "have", count: (repoCount))) no repo:
-                \(notRepos)
-                """)
+        case let directoryCount
+        where directoryCount > 1:
+            // IF ALL > 1 DIRECTORIES ARE REPOS
+            if (directoryCount == repoCount) && notRepoCount == 0 {
+                msg =
+                    """
+                    Every directory contains a repo:
+                    \(repos)
+                    """
+                // IF ALL > 1 DIRECTORIES ARE NOT REPOS
+            } else if repoCount == 0 && (directoryCount == notRepoCount) {
+                msg =
+                    """
+                    No directory here contains a repo:
+                    \(notRepos)
+                    """
+            } else if repoCount > 1 && notRepoCount == 1 {
+                msg =
+                    """
+                    Most directories here contain a repo:
+                    \(repos)
+                    ----------
+                    1 directory here does not contain a repo:
+                    \(notRepos)
+                    """
+            } else if repoCount > 1 && notRepoCount > 1 {
+                msg =
+                    """
+                    \(repoCount) directories contain a repo:
+                    \(repos)
+                    ----------
+                    \(notRepoCount) directories do not contain a repo:
+                    \(notRepos)
+                    """
+            } else if repoCount == 1 && notRepoCount > 1 {
+                msg =
+                    """
+                    1 directory here contains a repo:
+                    \(repos)
+                    ----------
+                    Most directories here do not contain a repo:
+                    \(notRepos)
+                    """
+            }
+
+        // IF > 1 DIRECTORIES, == REPOS, 0 NOT REPOS
+        // IF > 1 DIRECTORIES, 0 REPOS, == NOT REPOS
+        // IF > 1 DIRECTORIES, 0 REPOS, > 1 NOT REPOS
+        // IF > 1 DIRECTORIES, 1 REPOS, > 1 NOT REPOS
+        // IF > 1 DIRECTORIES, > 1 REPOS, 1 NOT REPOS
+        // IF > 1 DIRECTORIES, > 1 REPOS, > 1 NOT REPOS
+        default: msg = "SOMETHING'S WRONG"
         }
     }
+    /* END SWITCH STATEMENT /////////////////// */
 
-    print(printLine)
+    print(msg)
 }

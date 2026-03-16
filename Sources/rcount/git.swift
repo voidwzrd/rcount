@@ -17,7 +17,21 @@ func runGit(args: [String]) -> String {
     return String(data: data, encoding: .utf8) ?? ""
 }
 
-func checkGitRepoStatus(dir: String) -> Bool {
-    let result = runGit(args: ["-C", "\(dir)", "rev-parse", "--is-inside-work-tree"])
-    return result.trimmingCharacters(in: .whitespacesAndNewlines) == "true" ? true : false
+func checkGitRepoStatus(_ dirPath: String, currentDirPath: String,) -> Bool {
+    // var result = ""
+
+// if r = r
+    // if dirPath.count == 0 {
+    //     result = runGit(args: ["rev-parse", "--is-inside-work-tree"]) == "true" ? "true" : "false"
+    // } else {
+    //     // result = runGit(args: ["-C", "\(dir)", "rev-parse", "--show-toplevel"]) == true ? true : false
+    //     result = "false"
+    // }
+
+    // let result = runGit(args: ["-C", "\(dir)", "rev-parse", "--is-inside-work-tree"])
+//   ÷÷
+
+return true
+
+    // return result.trimmingCharacters(in: .whitespacesAndNewlines) == "true" ? true : false
 }
