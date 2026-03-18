@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:lurk}",
+            "name": "Debug lurk",
+            "target": "lurk",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug lurk"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:lurk}",
+            "name": "Release lurk",
+            "target": "lurk",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release lurk"
+        }
+    ]
+}
