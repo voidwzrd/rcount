@@ -156,14 +156,15 @@ struct Lurk: ParsableCommand {
         case false:
             for item in items {
                 let values = try item.resourceValues(forKeys: [.isDirectoryKey])
+                let item = item.lastPathComponent
 
                 if values.isDirectory == true {
                     if runGit(args: [
-                        "-C", "\(item.lastPathComponent)", "rev-parse", "--is-inside-work-tree",
+                        "-C", "\(item)", "rev-parse", "--is-inside-work-tree",
                     ]) {
-                        repos += [item.lastPathComponent]
+                        repos += [item]
                     } else {
-                        notRepos += [item.lastPathComponent]
+                        notRepos += [item]
                     }
                 }
             }
