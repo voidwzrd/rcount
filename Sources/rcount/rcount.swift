@@ -2,10 +2,10 @@ import ArgumentParser
 import Foundation
 
 @main
-struct rcount: ParsableCommand {
+struct Lurk: ParsableCommand {
     static let configuration = CommandConfiguration(
-        commandName: "rcount",
-        abstract: "Shows how many local directories contain a git repo",
+        commandName: "lurk",
+        abstract: "macOS Terminal app that counts repositories within a local directory",
         version: "1.0"
     )
 

@@ -19,6 +19,26 @@
             "target": "rcount",
             "configuration": "release",
             "preLaunchTask": "swift: Build Release rcount"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:rcount}",
+            "name": "Debug lurk",
+            "target": "lurk",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug lurk"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:rcount}",
+            "name": "Release lurk",
+            "target": "lurk",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release lurk"
         }
     ]
 }
