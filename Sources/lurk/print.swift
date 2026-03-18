@@ -1,10 +1,7 @@
 import ArgumentParser
 import Foundation
 
-// THIS DOCUMENT DETERMINES FINAL PRINT STATEMENT
 
-/* rCount -- number of repos; rDirs -- which repos */
-/* nCount -- number of folders without repos; nDirs -- which repos */
 
 func printMsg(isQuiet: Bool, repos: [String], notRepos: [String]) {
 
