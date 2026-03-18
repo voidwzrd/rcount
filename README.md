@@ -1,5 +1,5 @@
 # lurk
-macOS Terminal app that counts repositories within a local directory
+macOS Terminal app that gets the number of repositories within a directory
 
 ## Table of Contents
 - [About](#about)
